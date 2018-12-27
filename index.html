@@ -1,0 +1,934 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <title>Document</title>
+
+    <style type="text/css">
+        :root {
+            /*Basic Colors*/
+            --white: #ffffff;
+            --success: #22ce8b;
+            --success-lite: lighten(var(--success), 10%);
+            --error: #f46363;
+            --error-lite: rgba(245, 109, 109, 0.1);
+            --warning: #ffcd54;
+            /*Text Colors*/
+            --text-primary: #040e28;
+            --text-secondary: #646d82;
+            --disabled: #a6b1c2;
+            --shadow-color: rgba(148, 148, 148, 0.25);
+            /*Background Greys*/
+            --bg-grey-dark: #dce1ea;
+            --bg-grey-medium: #e6eaf0;
+            --bg-grey-light: #f0f2f7;
+            --bg-grey-lighter: #f9fafc;
+            --color-blue-lite: rgba(0, 110, 255, 0.1);
+            --color-blue-liter: rgba(0, 110, 255, 0.02);
+            --color-green-lite: rgba(34, 206, 139, 0.1);
+            --color-orange-lite: rgba(255, 173, 48, 0.1);
+            --main-bg-color: var(--bg-grey-light);
+            /*Table Colors*/
+            --table-row-hover: #d8e5f1;
+            /*button colors*/
+            --primary-button-color: #1f7fff;
+            --primary-button-hover-state: #3fa9f5;
+            --primary-button-pressed-state: #0071bc;
+            --primary-button-lite: rgba(0, 99, 233, 0.1);
+            --primary-button-lite-hover-state: rgba(0, 99, 233, 0.2);
+            --primary-button-lite-pressed-state: rgba(0, 99, 233, 0.3);
+            --hollow-button-border: #e9ecf2;
+            --hollow-button-hover-bg: #fafafb;
+            --green-button-hover-bg: #1ebd80;
+            --green-button-pressed-bg: #19ac73;
+            --green-button-lite: rgba(34, 206, 139, 0.1);
+            --green-button-lite-hover: rgba(20, 201, 131, 0.2);
+            --green-button-lite-pressed: rgba(20, 201, 131, 0.3);
+            --red-button-hover: #dd5252;
+            --red-button-pressed: #d64343;
+            --red-button-lite: rgba(244, 99, 99, 0.3);
+            --red-button-lite-hover: rgba(244, 99, 99, 0.4);
+            --red-button-lite-pressed: rgba(244, 99, 99, 0.5);
+            --input-disabled-bg: var(--bg-grey-lighter);
+        }
+
+        /*shadow rules*/
+        .shadow {
+            -webkit-box-shadow: 0 8px 16px var(--shadow-color);
+            -moz-box-shadow: 0 8px 16px var(--shadow-color);
+            box-shadow: 0 8px 16px var(--shadow-color);
+        }
+
+        /*html element level style rules*/
+        html {
+            font-family: "Avenir", Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            box-sizing: border-box;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            outline: 0;
+        }
+
+        li {
+            outline: 0;
+        }
+
+        #app {
+            padding: 20px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 15px;
+            cursor: pointer;
+            outline: 0;
+            border: 0;
+        }
+
+        .btn img {
+            padding-right: 10px;
+        }
+
+        .btn-blue {
+            background: var(--primary-button-color);
+            color: #fff;
+        }
+
+        .btn-blue:active {
+            background: var(--primary-button-pressed-state);
+        }
+
+        .btn-blue:hover {
+            background: var(--primary-button-hover-state);
+        }
+
+        .btn-hollow {
+            background-color: transparent;
+            border: 0.1rem solid #fff;
+            color: var(--text-primary);
+            cursor: pointer;
+            outline: 0;
+        }
+
+        .btn-hollow:hover {
+            border: 0.1rem solid #eee;
+            background-color: #fff;
+        }
+
+        .btn-x0 {
+            width: 4rem;
+            height: 3.5rem;
+        }
+
+        .btn-elipsis-v-center {
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url("./assets/icon-set/elipsis-v.svg");
+        }
+
+        /***** DROP DOWN MENU STYLE RULES *****/
+        .dropdown-wrap {
+            position: relative;
+        }
+
+        .dropdown-wrap .dropdown-menu {
+            display: block;
+            position: absolute;
+            width: max-content;
+            right: 0;
+            top: 2.3rem;
+            z-index: 1;
+            background-color: var(--white);
+            padding: 0.3rem 0;
+        }
+
+        .dropdown-wrap .dropdown-menu li {
+            cursor: pointer;
+            padding: 0.3rem 2rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-grey-light);
+            min-height: 3rem;
+        }
+
+        .dropdown-wrap .dropdown-menu li:hover {
+            background-color: var(--bg-grey-lighter);
+        }
+
+        .dropdown-wrap .dropdown-menu li img {
+            margin-right: 1rem;
+            display: inline;
+        }
+
+        .dropdown-wrap .dropdown-menu .ddmenu-active {
+            color: var(--primary-button-color);
+        }
+
+        .clickable {
+            cursor: pointer;
+        }
+
+        .search-wrap {
+            display: flex;
+            border-radius: 2px;
+            border: 1px solid var(--bg-grey-dark);
+            background-color: var(--bg-grey-lighter);
+            width: 300px;
+        }
+
+        .search-wrap input {
+            border: 0px;
+            background-repeat: no-repeat;
+            background-position: 0% 50%;
+            background-image: url("./assets/icon-set/search.svg");
+            padding: 1rem 1rem 1rem 2rem;
+            margin: 0 !important;
+            width: 100%;
+            outline: 0;
+            background-color: var(--bg-grey-lighter);
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+        }
+
+        .search-wrap select {
+            outline: 0;
+            border: 0px;
+            background-color: var(--bg-grey-light);
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-right: 10px;
+        }
+
+        .search-wrap select>option {
+            font-size: 1.6rem;
+            color: var(--text-secondary);
+            background: #f8f8f8;
+            line-height: 2;
+            outline: 0;
+        }
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 0.5s;
+        }
+
+        .fade-enter,
+        .fade-leave-to
+
+        /* .fade-leave-active below version 2.1.8 */
+            {
+            opacity: 0;
+        }
+
+        .slide-fade-enter-active {
+            transition: all 0.3s ease;
+        }
+
+        .slide-fade-leave-active {
+            transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+        }
+
+        .slide-fade-enter,
+        .slide-fade-leave-to
+
+        /* .slide-fade-leave-active below version 2.1.8 */
+            {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+
+        /* from table component */
+        .table-wrap {
+            width: 100%;
+            background: #fff;
+            font-size: 1.6rem;
+        }
+
+        .pre-table {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .table-titles .table-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+
+        .table-ctas {
+            display: flex;
+        }
+
+        .tr {
+            display: grid;
+            margin-bottom: 1rem;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto;
+            grid-auto-columns: 1fr;
+            grid-auto-rows: auto;
+            grid-auto-flow: column;
+            border-radius: 0.2rem;
+            padding: 0.3rem 1rem;
+        }
+
+        .tbody {
+            background: var(--color-blue-liter);
+            border: 1px solid var(--color-blue-lite);
+        }
+
+        .th {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            font-weight: normal;
+            padding: 10px 15px;
+            box-sizing: border-box;
+            color: var(--text-secondary);
+            grid-column: span 10;
+            border-radius: 7px;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .th:hover {
+            background-color: var(--bg-grey-lighter);
+            border-bottom: 2px solid var(--color-blue-lite);
+        }
+
+        .td {
+            display: flex;
+            align-items: center;
+            vertical-align: center;
+            text-align: left;
+            min-height: 3.5rem;
+            color: var(--text-primary);
+            padding: 2px 15px;
+            box-sizing: border-box;
+            font-size: 1.3rem;
+            grid-column: span 10;
+        }
+
+        .td-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            grid-column: span 1;
+        }
+
+        .td-actions img {
+            cursor: pointer;
+        }
+
+        .table-subtitle {
+            font-size: 1.4rem;
+            color: var(--disabled);
+            font-style: italic;
+        }
+
+        .tbl-controls {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 5px 0;
+        }
+
+        .td-edit-input {
+            padding: 8px;
+            outline: 0px;
+            border: 1px solid rgb(238, 238, 238);
+        }
+
+        .modal-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.02);
+            top: 0;
+            left: 0;
+        }
+
+        .tbl-pagination {
+            display: flex;
+            color: var(--disabled);
+        }
+
+        .tbl-pagination span {
+            padding-left: 20px;
+        }
+
+        .tbl-pagination img {
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        .modal-wrap {
+            width: 600px;
+            min-height: 200px;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f8f8;
+            padding: 10px 30px;
+            box-sizing: border-box;
+        }
+
+        .modal-header img {
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 20px;
+        }
+
+        .modal-content {
+            padding: 20px 30px;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .input-group {
+            display: block;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .input-group .input-group-label {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid var(--bg-grey-dark);
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 650px) {
+            .table-wrap .pre-table {
+                flex-flow: column;
+                align-items: center;
+            }
+
+            .table-wrap .pre-table .table-ctas {
+                margin: 20px 0;
+            }
+
+            .tbl-controls {
+                flex-flow: column;
+                align-items: center;
+            }
+
+            .tbl-controls .tbl-pagination {
+                margin: 20px 0;
+            }
+
+            .thead {
+                display: none !important;
+            }
+
+            .table-wrap .tr {
+                display: block;
+                -webkit-box-shadow: 0 4px 8px var(--shadow-color);
+                -moz-box-shadow: 0 4px 8px var(--shadow-color);
+                box-shadow: 0 4px 8px var(--shadow-color);
+            }
+
+            .table-wrap .pre-table {
+                background: var(--bg-grey-lighter);
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .modal-wrap {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="data-table"></div>
+
+    <script type="text/babel">
+        class DataTable extends React.Component {
+            state = {
+                metaData: {
+                    tblTitle: "BriteCore Payment Data",
+                    tblSubtitle: "Customer settement sheet for the month of October, 2018.",
+                    trActions: true,
+                    trCheckbox: false,
+                    tblSummary: "the table is a brief breakdown of all the accumulated wealth of britecore's clientale"
+                },
+
+                "collections": [
+                    {
+                        "ID": "3471DA17-401F-9633-BF81-4CADA6FD5C79",
+                        "Name": "Kyra Lester",
+                        "Description": "Curabitur dictum. Phasellus in",
+                        "Date": "2017-07-23T04:24:49-07:00",
+                        "Amount": 345.54
+                    },
+                    {
+                        "ID": "9F5C9912-936A-FB85-1EDB-9DA87BE7FF1E",
+                        "Name": "Buckminster Alvarado",
+                        "Description": "dui, in sodales elit erat vitae risus. Duis a mi",
+                        "Date": "2018-11-08T05:44:15-08:00",
+                        "Amount": 677.08
+                    },
+                    {
+                        "ID": "B743AC82-3613-13A2-2E42-E0C1F5CBF8A6",
+                        "Name": "Athena Smith",
+                        "Description": "massa lobortis ultrices. Vivamus rhoncus.",
+                        "Date": "2018-11-11T06:19:57-08:00",
+                        "Amount": 73.67
+                    },
+                    {
+                        "ID": "74749D4F-A43F-34E8-A687-D54924B17251",
+                        "Name": "Cameron Thompson",
+                        "Description": "dolor. Fusce mi lorem, vehicula et, rutrum eu,",
+                        "Date": "2019-09-30T06:56:15-07:00",
+                        "Amount": 807.6
+                    }
+                ],
+
+                sortState: true,
+                ddmenu_tblmenu: false,
+                ddmenu_tblitem: false,
+                clickItemIndex: null,
+                editTrIndex: null,
+
+                thKeys: null,
+
+                pagination_data: {
+                    currentPage: 0,
+                    perPage: 0,
+                    totalPages: 0
+                },
+
+                formData: [],
+                error: null,
+
+                payload: {
+                    name: null,
+                    val: null
+                },
+                search: "",
+                searchKey: "",
+                openPopup: false,
+                modalTitle: "New Data Entry"
+            }
+
+            metaData = () => {
+                return this.state.metaData
+            }
+            collections = () => {
+                return this.state.collections || [];
+            }
+            filteredCollections = () => {
+                const criteria = this.state.search.toLowerCase();
+                const key = this.state.searchKey;
+                if (criteria && key) {
+                    return Object.values(this.state.collections).filter(item => {
+                        if (item[key]) {
+                            const to_compare = item[key].toLowerCase();
+                            return to_compare.includes(criteria)
+                        }
+                    });
+                } else {
+                    return this.state.collections;
+                }
+            }
+            sortCollections = (sort_key) => {
+                this.setState({
+                    sortState: !this.state.sortState
+                });
+                if (this.state.sortState) {
+                    this.state.collections.sort(function (a, b) {
+                        if (a[sort_key] < b[sort_key]) { return -1; }
+                        if (a[sort_key] > b[sort_key]) { return 1; }
+                        return 0;
+                    })
+                } else {
+                    this.state.collections.sort(function (a, b) {
+                        if (a[sort_key] > b[sort_key]) { return -1; }
+                        if (a[sort_key] < b[sort_key]) { return 1; }
+                        return 0;
+                    })
+                }
+            }
+            createCollection = () => {
+                const updatedCollection = [...this.state.collections, this.state.formData];
+                this.setState({
+                    collections: updatedCollection
+                }); 
+            }
+            updateCollections = (payload) => {
+                let dataBack = Object.values(this.state.collections).find(data => data.ID == payload[2]);
+                const item_index = Object.values(dataBack).indexOf(dataBack[payload[1]]);
+                const obj_index = Object.values(this.state.collections).findIndex(data => data.ID == payload[2]);
+                const keyBack = Object.keys(dataBack);
+                const req_payload = payload[0].srcElement.value;
+                const req_header = keyBack[item_index];
+
+                let updatedCollection = [...this.state.collections];
+                dataBack[req_header] = req_payload;
+                updatedCollection[obj_index] = dataBack;
+                this.setState({
+                    collections: updatedCollection
+                });
+            }
+            deleteCollection = (payload) => {
+                const obj_index = Object.values(this.state.collections).findIndex(data => data.ID == payload);
+                let updatedCollection = [...this.state.collections];
+                updatedCollection.splice(obj_index, 1)
+                this.setState({
+                    collections: updatedCollection
+                });
+            }
+            setCollections = (payload) => {
+                this.setState({
+                    collections: payload
+                });
+            }
+
+            item_to_show = (i) => {
+                return this.clickItemIndex === i;
+            }
+            item_to_edit = (i) => {
+                return this.editTrIndex === i;
+            }
+            tblmenu_onclick = () => {
+                this.ddmenu_tblmenu = !this.ddmenu_tblmenu;
+            }
+            tblmenuitem_onclick = (itemIndex) => {
+                if (this.clickItemIndex == itemIndex) {
+                    this.clickItemIndex = null;
+                } else {
+                    this.clickItemIndex = itemIndex;
+                }
+                this.ddmenu_tblitem = !this.ddmenu_tblitem;
+            }
+            editTr_onclick = (itemIndex) => {
+                if (this.editTrIndex == itemIndex) {
+                    this.editTrIndex = null;
+                } else {
+                    this.editTrIndex = itemIndex;
+                }
+            }
+            deleteTr_onclick = (itemIndex) => {
+                collections.splice(itemIndex, 1);
+            }
+            paginate = (collection, page, numItems) => {
+                if (!Array.isArray(collection)) {
+                    throw `Expect array and got ${typeof collection}`;
+                }
+                const currentPage = parseInt(page);
+                const perPage = parseInt(numItems);
+                const offset = (page - 1) * perPage;
+                const paginatedItems = collection.slice(offset, offset + perPage);
+
+                return {
+                    currentPage,
+                    perPage,
+                    total: collection.length,
+                    totalPages: Math.ceil(collection.length / perPage),
+                    data: paginatedItems
+                };
+            }
+            prev = () => {
+                let updatedCollection = [...this.state.collections];
+                if (this.state.pagination_data.currentPage <= 1) {
+                    updatedCollection.pagination_data.currentPage = 1;
+                } else {
+                    updatedCollection.pagination_data.currentPage -= 1;
+                }
+                this.setState({
+                    collection: updatedCollection
+                });
+            }
+            next = () => {
+                let updatedCollection = [...this.state.collections];
+                if (this.state.pagination_data.currentPage >= this.state.pagination_data.totalPages) {
+                    updatedCollection.pagination_data.currentPage = this.state.pagination_data.totalPages;
+                } else {
+                    updatedCollection.pagination_data.currentPage += 1;
+                }
+                this.setState({
+                    collection: updatedCollection
+                });
+            }
+            inputVal = (payload) => {
+                let updatedCollection = [...this.state.collections];
+                updatedCollection.formData.push({ [payload.name]: payload.val });
+                this.setStatetate({
+                    collection: updatedCollection
+                });
+            }
+            updateObj =() => {
+                let updatedCollection = [...this.state.collections];
+                updatedCollection.payload.name = this.params.name //there isnt no params
+                this.setState({
+                    collection: updatedCollection
+                });
+                if (this.state.payload.val) {
+                    this.setState({
+                        error: null
+                    });
+                    this.params._return(this.payload);
+                } else {
+                    this.error = `${this.params.name} is required`;
+                }
+            }
+            loadedCollection = (page=1, perPage=5) => {
+                // this.search_key = this.searchKey;
+                // this.search_val = this.search;
+
+                const getdata = this.filteredCollections();
+                let updatePagination = this.state.pagination_data;
+               
+                if (!this.state.pagination_data.currentPage) {
+                    updatePagination.currentPage = page;
+                    updatePagination.perPage = perPage;
+                    updatePagination.totalPages = getdata.length + 1;
+                    this.setState({
+                        pagination_data: updatePagination
+                    });
+                }
+                
+                return this.paginate(
+                    getdata,
+                    this.state.pagination_data.currentPage,
+                    this.state.pagination_data.perPage
+                );
+            }
+            collections_keys = () => {
+                let obj = Object.values(this.state.collections);
+                return Object.keys(obj[0]) || [];
+            }
+            toggle_modal = () =>{
+                this.setState({
+                    openPopup: !this.openPopup
+                })
+            }
+            handleSearchKey = (event) => {
+                this.setState({
+                    searchKey: event.target.value
+                })
+            }
+            handleSearchCriteria = (event) => {
+                this.setState({
+                    search: event.target.value
+                })
+            }
+
+            render() {
+                return (
+                    <div className="app-content">
+                        <div id="data-table" className="table-wrap">
+                            <div className="pre-table">
+                                <div className="table-titles">
+                                    <div className="table-title">{this.state.metaData.tblTitle}</div>
+                                    <div className="table-subtitle">{this.state.metaData.tblSubtitle}</div>
+                                </div>
+                                <div className="table-ctas">
+                                    <button onClick={this.toggle_modal} className="btn btn-blue">
+                                        <img src="./assets/icon-set/plus-white.svg" /> Add New
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="tbl-controls">
+                                <div className="search-wrap">
+                                    <select onChange={this.handleSearchKey}>
+                                        {this.collections_keys().map(item => <option key={item} value={item} >{item}</option>)}
+                                    </select>
+                                    <input onChange={this.handleSearchCriteria} type="search" placeholder="search..." />
+                                </div>
+
+                                <div className="tbl-pagination">
+                                    <span>
+                                        showing page {this.state.pagination_data.currentPage} out of {this.state.pagination_data.totalPages} pages
+                                    </span>
+                                    <img onClick={this.prev} src="./assets/icon-set/angle-left.svg" />
+                                    <img onClick={this.next} src="./assets/icon-set/angle-right.svg" />
+                                </div>
+
+                            </div>
+
+                            <div className="tbl">
+                                <div>
+                                    <div className="tr thead">
+                                        {
+                                            this.state.metaData.trCheckbox
+                                            ? <div className="td-actions"></div>
+                                            : null
+                                        }
+                                        
+                                        {this.collections_keys().map(th => 
+                                            <div key={th} onClick={() => this.sortCollections([th])} className="th">
+                                                <span>{th}</span>
+                                                <img src="./assets/icon-set/filter.svg" />
+                                            </div>
+                                        )}
+                                        
+                                        {
+                                            this.state.metaData.trActions
+                                            ? <div className="td-actions"></div>
+                                            : null
+                                        }
+                                    </div>
+                                </div>
+                                {this.loadedCollection().data.map((item, index) => 
+                                    <div key={index}> 
+                                        {
+                                            item
+                                            ? ( 
+                                                <div className="tr tbody">
+                                                    {
+                                                        this.state.metaData.trCheckbox
+                                                        ? (
+                                                            <div className="td-actions">
+                                                                <input type="checkbox" />
+                                                            </div>
+                                                        ):(null)
+                                                    }
+                                                    { Object.values(item).map((val, key) => 
+                                                        <div key={key} className="td"> 
+                                                            {
+                                                                this.item_to_edit(index) 
+                                                                ? <input value={val} onChange={() => this.updateCollections($event, key, item.ID), () => this.editTr_onclick('')}
+                                                                type="text" className="td-edit-input" />
+                                                                : <span>{val}</span>
+                                                            }
+                                                        </div>
+                                                    )}
+                                                    {
+                                                        this.metaData.trActions
+                                                        ? (
+                                                            <div className="td-actions dropdown-wrap">
+                                                                <button onClick={() => this.tblmenuitem_onclick(index)} className="btn-hollow btn-elipsis-v-center btn-x0"></button>
+                                                                <div className="dropdown-wrap">
+                                                                    {
+                                                                        this.item_to_show(index)
+                                                                        ? (
+                                                                            <ul onClick={() => tblmenuitem_onclick('')} className="dropdown-menu">
+                                                                                <li onClick={() => editTr_onclick(index), () => tblmenuitem_onclick('')}>
+                                                                                    <img src="./assets/icon-set/edit.svg" /> Edit
+                                                                                </li>
+                                                                                <li onClick={() => deleteCollection([item.ID]), () => tblmenuitem_onclick('')}>
+                                                                                    <img src="./assets/icon-set/trash-red.svg" /> Delete
+                                                                                </li>
+                                                                            </ul>
+                                                                        )
+                                                                        : (null)
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                        : (null)
+                                                    }
+                                                </div>
+                                            ) : (null)
+                                        }
+                                        
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="tbl-controls">
+                                <div className="tbl-pagination">
+                                <span>
+                                    showing page {this.state.pagination_data.currentPage} out of {this.state.pagination_data.totalPages} pages
+                                </span>
+                                <img onClick={this.prev} src="./assets/icon-set/angle-left.svg" />
+                                <img onClick={this.next} src="./assets/icon-set/angle-right.svg" />
+                            </div>
+                            {
+                                this.metaData.tblSummary
+                                ? <div className="table-subtitle">{this.metaData.tblSummary}</div>
+                                : null
+                            }
+                            
+                        </div>
+
+                        {
+                            this.state.openPopup
+                            ? (
+                                <div className="modal-overlay">
+                                    <div className="modal-wrap shadow">
+                                        <div className="modal-header">
+                                            <div className="modal-title">{this.state.modalTitle}</div>
+                                            <img onClick={this.toggle_modal} src="./assets/icon-set/times.svg" />
+                                        </div>
+
+                                        <div className="modal-content">
+                                            <form onSubmit={this.createCollection}>
+                                                {this.collections_keys().map(key => 
+                                                    <div className="input-group" key="key">
+                                                        <div className="input-group-label">{key}</div>
+                                                        <input className={[{ isInvalid: this.state.error }, 'form-control', 'form-control-lg']} name="key"
+                                                            type="text" onChange={updateObj} value={this.state.payload.val} />
+                                                        {
+                                                            this.state.error
+                                                            ? <div className="invalid-feedback">{this.state.error}</div>
+                                                            : null
+                                                        }
+                                                    </div>
+                                                )}
+                                                <button className="btn btn-blue">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (null)
+                        }
+                        
+                    </div>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<DataTable />, document.getElementById('data-table'));
+    </script>
+</body>
+
+</html>
